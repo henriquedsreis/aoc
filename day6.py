@@ -82,10 +82,10 @@ def hop_to_san():
     while pos != 'SAN':
     #for i in range(50):
 
-        print('--')
-        print('pos: ' + str(pos))
-        print('traversed: ' + str(traversed))
-        print('deadend: ' + str(DEAD_END))
+        #print('--')
+        #print('pos: ' + str(pos))
+        #print('traversed: ' + str(traversed))
+        #print('deadend: ' + str(DEAD_END))
 
         #if 'SAN' in HOP_MAP[pos]:
         #    break
