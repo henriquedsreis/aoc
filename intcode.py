@@ -103,7 +103,8 @@ class IntCodeProgram:
     def execute_instruction(self):
 
         if self.pointer >= len(self.program):
-            return -1
+            self.status = Status.ERROR
+            return 0
 
         operator = self.program[self.pointer]
         #print('op:' + str(operator))
@@ -143,7 +144,6 @@ class IntCodeProgram:
             self.execute_opcode8(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], self.program[self.pointer+3])
             return 4
         elif opcode_int == 99:
-            #print('halting')
             self.status = Status.HALTED
             return 0
         else:
@@ -157,7 +157,6 @@ class IntCodeProgram:
             return self.output
 
         self.status = Status.RUNNING
-        return_code = 0
 
         while self.status not in (Status.HALTED, Status.ERROR, Status.STANDBY):
             return_code = self.execute_instruction()
