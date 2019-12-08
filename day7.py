@@ -23,7 +23,7 @@ program = ex3
 all_settings = permutations([0, 1, 2, 3, 4], 5)
 
 output = 0
-"""
+
 #loop all possible settings
 for setting in all_settings:
     input = 0
@@ -40,7 +40,7 @@ for setting in all_settings:
 
 print(output)
 print(output_setting)
-"""
+
 
 ################################################################################
 # PART 2
@@ -51,7 +51,6 @@ ex5 = [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,
 
 program = day7_input
 all_settings = permutations([5, 6, 7, 8, 9], 5)
-#all_settings = permutations([0, 1, 2, 3, 4], 5)
 #all_settings = ([9, 8, 7, 6, 5],)
 
 
