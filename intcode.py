@@ -58,27 +58,35 @@ class IntCodeProgram:
         self.program[pos] = val
 
     #adds
-    def execute_opcode1(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_index: int):
+    def execute_opcode1(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_mode: int, param3_index: int):
         p1 = self.get_param(param1_mode, param1_index)
         p2 = self.get_param(param2_mode, param2_index)
+        if param3_mode == 2:
+            p3 = self.relative_base + param3_index
+        else:
+            p3 = param3_index
         #self.program[param3_index] = p1 + p2
-        self.write_to_pos(param3_index, p1 + p2)
+        self.write_to_pos(p3, p1 + p2)
 
     #multiplies
-    def execute_opcode2(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_index: int):
+    def execute_opcode2(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_mode: int, param3_index: int):
         p1 = self.get_param(param1_mode, param1_index)
         p2 = self.get_param(param2_mode, param2_index)
+        if param3_mode == 2:
+            p3 = self.relative_base + param3_index
+        else:
+            p3 = param3_index
         #self.program[param3_index] = p1 * p2
-        self.write_to_pos(param3_index, p1 * p2)
+        self.write_to_pos(p3, p1 * p2)
 
     #writes (input)
     def execute_opcode3(self, param1_mode: int, param1_index: int):
-        #fix 203 error https://www.reddit.com/r/adventofcode/comments/e8aw9j/2019_day_9_part_1_how_to_fix_203_error/
         if param1_mode == 2:
             p1 = self.relative_base + param1_index
         else:
             p1 = param1_index
         #self.program[param1_index] = self.input.pop()
+        #p1 = self.get_param(param1_mode, param1_index)
         self.write_to_pos(p1, self.input.pop())
 
     #reads (output)
@@ -86,6 +94,7 @@ class IntCodeProgram:
         p1 = self.get_param(param1_mode, param1_index)
         self.output = p1
         #print('output:' + str(self.output))
+        #fix 203 error https://www.reddit.com/r/adventofcode/comments/e8aw9j/2019_day_9_part_1_how_to_fix_203_error/
         self.status = Status.STANDBY
 
     #jump if true
@@ -109,28 +118,36 @@ class IntCodeProgram:
             self.pointer += 3
 
     #less than
-    def execute_opcode7(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_index: int):
+    def execute_opcode7(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_mode: int, param3_index: int):
         p1 = self.get_param(param1_mode, param1_index)
         p2 = self.get_param(param2_mode, param2_index)
+        if param3_mode == 2:
+            p3 = self.relative_base + param3_index
+        else:
+            p3 = param3_index
 
         if p1 < p2:
             #self.program[param3_index] = 1
-            self.write_to_pos(param3_index, 1)
+            self.write_to_pos(p3, 1)
         else:
             #self.program[param3_index] = 0
-            self.write_to_pos(param3_index, 0)
+            self.write_to_pos(p3, 0)
 
     #less than
-    def execute_opcode8(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_index: int):
+    def execute_opcode8(self, param1_mode: int, param1_index: int, param2_mode: int, param2_index: int, param3_mode: int, param3_index: int):
         p1 = self.get_param(param1_mode, param1_index)
         p2 = self.get_param(param2_mode, param2_index)
+        if param3_mode == 2:
+            p3 = self.relative_base + param3_index
+        else:
+            p3 = param3_index
 
         if p1 == p2:
             #self.program[param3_index] = 1
-            self.write_to_pos(param3_index, 1)
+            self.write_to_pos(p3, 1)
         else:
             #self.program[param3_index] = 0
-            self.write_to_pos(param3_index, 0)
+            self.write_to_pos(p3, 0)
 
     #set relative base
     def execute_opcode9(self, param1_mode: int, param1_index: int):
@@ -148,21 +165,22 @@ class IntCodeProgram:
         #print('op:' + str(operator))
         #print('p:' + str(self.pointer))
 
-        operator_5dig = format(operator, '04d')
+        operator_5dig = format(operator, '05d')
         opcode = operator_5dig[-2:]
 
-        param1_mode = int(operator_5dig[1])
-        param2_mode = int(operator_5dig[0])
+        param1_mode = int(operator_5dig[2])
+        param2_mode = int(operator_5dig[1])
+        param3_mode = int(operator_5dig[0])
 
         opcode_int = int(opcode)
         #print('opc: ' + str(opcode_int))
-        print(operator_5dig)
+        #print(operator_5dig)
 
         if opcode_int == 1:
-            self.execute_opcode1(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], self.program[self.pointer+3])
+            self.execute_opcode1(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], param3_mode, self.program[self.pointer+3])
             return 4
         elif opcode_int == 2:
-            self.execute_opcode2(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], self.program[self.pointer+3])
+            self.execute_opcode2(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], param3_mode, self.program[self.pointer+3])
             return 4
         elif opcode_int == 3:
             self.execute_opcode3(param1_mode, self.program[self.pointer+1])
@@ -177,10 +195,10 @@ class IntCodeProgram:
             self.execute_opcode6(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2])
             return 0
         elif opcode_int == 7:
-            self.execute_opcode7(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], self.program[self.pointer+3])
+            self.execute_opcode7(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], param3_mode, self.program[self.pointer+3])
             return 4
         elif opcode_int == 8:
-            self.execute_opcode8(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], self.program[self.pointer+3])
+            self.execute_opcode8(param1_mode, self.program[self.pointer+1], param2_mode, self.program[self.pointer+2], param3_mode, self.program[self.pointer+3])
             return 4
         elif opcode_int == 9:
             self.execute_opcode9(param1_mode, self.program[self.pointer+1])
@@ -202,13 +220,9 @@ class IntCodeProgram:
         self.status = Status.RUNNING
 
         while self.status not in (Status.HALTED, Status.ERROR, Status.STANDBY):
-            #print(self.output)
-            #print(self.program)
             return_code = self.execute_instruction()
             self.pointer += return_code
             #print(self.pointer)
 
         #print('stat:' + str(self.status))
-        #print('prog:' + str(self.program))
-        #print('pointer:' + str(self.pointer))
         return self.output

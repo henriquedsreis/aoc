@@ -1,5 +1,5 @@
 """
-Day 8
+Day 9
 """
 from intcode import IntCodeProgram, Status
 
@@ -14,16 +14,17 @@ ex3 = [104,1125899906842624,99]
 
 prog = IntCodeProgram(day9_input, [1])
 
-prog.process()
-
-print(prog.output)
-print(prog.program)
+#while prog.status != Status.HALTED:
+print(prog.process())
 
 #203 too low
+#4175314595
 
 
 
 ############################################################
 # PART 2
 
+prog = IntCodeProgram(day9_input, [2])
 
+print(prog.process())
