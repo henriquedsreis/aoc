@@ -76,9 +76,12 @@ new_pos_counter = 0
 
 
 while paint_robot.status != Status.HALTED:
-    #scan current pos
-    if robot_position not in panel_map.keys():  # first time at position
+    if new_pos_counter == 0:
         panel_map[robot_position] = Color.WHITE.value
+        new_pos_counter += 1
+    #scan current pos
+    elif robot_position not in panel_map.keys():  # first time at position
+        panel_map[robot_position] = Color.BLACK.value
         new_pos_counter += 1
 
     paint_robot.set_input(panel_map[robot_position])
@@ -105,11 +108,11 @@ while paint_robot.status != Status.HALTED:
         robot_position = (robot_position[0], robot_position[1] - 1)
 
 #print(new_pos_counter)
-print(panel_map.keys())
+#print(panel_map.keys())
 
 # img axis
 x_axis = abs(max([k[0] for k in panel_map.keys()]))
-y_axis = abs(min([k[1] for k in panel_map.keys()]))
+y_axis = abs(min([k[1] for k in panel_map.keys()])) + 1
 
 img = []
 # render img to list
@@ -120,15 +123,7 @@ for xy in range(x_axis * y_axis):
     else:
         img.append(panel_map[(xy % x_axis, - xy // x_axis)])
 
+print(x_axis, y_axis)
 print(img)
 
-#print_img (from day 8)
-buffer = []
-for xy in range(x_axis * y_axis):
-    #print(xy)
-    if xy % x_axis == 0:
-        print(*buffer, sep='')
-        buffer = []
-    buffer.append(img[xy])
-
-print(*buffer, sep='')
+#HHLCPRHL is wrong
