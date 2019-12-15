@@ -90,7 +90,7 @@ print("total:", calc_energy(planets))
 # PART 2
 
 print('--' * 20)
-input = ex2
+input = ex1
 
 # create planets
 planets = []
@@ -104,9 +104,8 @@ while True:
     #print_planets(planets)
 
     for p1_i in range(4):
-        for p2_i in range(p1_i, 4):
-            if p1_i != p2_i:
-                apply_gravity(planets[p1_i], planets[p2_i])
+        for p2_i in range(p1_i+1, 4):
+            apply_gravity(planets[p1_i], planets[p2_i])
 
     for p in planets:
         p.apply_velocity()
